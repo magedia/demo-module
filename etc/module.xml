@@ -13,7 +13,10 @@
         <sequence>
             <module name="Magedia_Core"/>
             <module name="Magedia_PdfInvoice"/>
-            <module name="Magedia_BannerManager" />
+            <module name="Magedia_BannerManager"/>
+            <module name="Magento_Inventory"/>
+            <module name="Magento_InventoryCatalog"/>
         </sequence>
     </module>
 </config>
+

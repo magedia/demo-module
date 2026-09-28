@@ -9,6 +9,7 @@ use Magedia\Demo\Processor\MagediaSampleData\ModulesPatches;
 use Magedia\Demo\Processor\MagentoSampleData\Invoice\InvoicesData as MagentoInvoices;
 use Magedia\Demo\Processor\MagentoSampleData\CreditMemo\CreditMemosData as MagentoCreditMemos;
 use Magedia\Demo\Processor\MagentoSampleData\Shipment\ShipmentsData as MagentoShipments;
+use Magedia\Demo\Processor\MagentoSampleData\Inventory\InventoryData as MagentoInventory;
 use Magedia\Demo\Processor\MagentoSampleData\Order\OrdersData as MagentoOrders;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -33,6 +34,11 @@ class InstallSampleData
     private ModulesPatches $modulesPatches;
 
     /**
+     * @var MagentoInventory
+     */
+    private MagentoInventory $magentoInventory;
+
+    /**
      * @var MagentoOrders
      */
     private MagentoOrders $magentoOrders;
@@ -44,6 +50,7 @@ class InstallSampleData
         LoggerInterface $logger,
         ModulesPatches $modulesPatches,
         ObjectManagerInterface $objectManager,
+        MagentoInventory $magentoInventory,
         MagentoOrders $magentoOrders,
         MagentoInvoices $magentoInvoices,
         MagentoCreditMemos $magentoCreditMemos,
@@ -52,6 +59,7 @@ class InstallSampleData
         $this->logger = $logger;
         $this->objectManager = $objectManager;
         $this->modulesPatches = $modulesPatches;
+        $this->magentoInventory = $magentoInventory;
         $this->magentoOrders = $magentoOrders;
         $this->magentoInvoices = $magentoInvoices;
         $this->magentoCreditMemos = $magentoCreditMemos;
@@ -65,6 +73,7 @@ class InstallSampleData
     public function setUpData(): void
     {
         $this->setupModulesPatches();
+        $this->magentoInventory->restore();
         $this->magentoOrders->createOrders();
         $this->magentoInvoices->createInvoices();
         $this->magentoCreditMemos->createCreditMemos();
@@ -77,12 +86,15 @@ class InstallSampleData
     private function setupModulesPatches(): void
     {
         $patches = $this->modulesPatches->createInstallDataPath();
-        foreach ($patches as $key => $moduleName) {
-            foreach ($moduleName as $patchName) {
+        foreach ($patches as $moduleName => $modulePatches) {
+            foreach ($modulePatches as $patchName) {
                 try {
-                    $patch = $this->objectManager->get("\Magedia\\$key\Setup\Patch\Data\\$patchName");
+                    $patch = $this->objectManager->get("\Magedia\\$moduleName\Setup\Patch\Data\\$patchName");
                     $patch->apply();
-                    $this->logger->info("Successfully install Sample Data for $moduleName module.");
+                    $this->logger->info(
+                        'Successfully installed sample data patch {patch} for {module} module.',
+                        ['patch' => $patchName, 'module' => $moduleName]
+                    );
                 } catch (Exception $e) {
                     $this->logger->info($e->getMessage());
                     continue;
@@ -91,3 +103,4 @@ class InstallSampleData
         }
     }
 }
+

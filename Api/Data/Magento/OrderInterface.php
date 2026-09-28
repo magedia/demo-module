@@ -24,8 +24,8 @@ interface OrderInterface
                 'save_in_address_book' => 1
             ],
             'items' => [
-                ['product_id' => '7', 'qty' => 1],
-                ['product_id' => '4', 'qty' => 1]
+                ['sku' => '24-UB02', 'qty' => 1],
+                ['sku' => '24-MB05', 'qty' => 1]
             ]
         ],
         [
@@ -45,10 +45,10 @@ interface OrderInterface
                 'save_in_address_book' => 1
             ],
             'items' => [
-                ['product_id' => '6', 'qty' => 1],
-                ['product_id' => '8', 'qty' => 1],
-                ['product_id' => '3', 'qty' => 1],
-                ['product_id' => '9', 'qty' => 1]
+                ['sku' => '24-MB02', 'qty' => 1],
+                ['sku' => '24-WB01', 'qty' => 1],
+                ['sku' => '24-MB03', 'qty' => 1],
+                ['sku' => '24-WB02', 'qty' => 1]
             ]
         ],
         [
@@ -68,9 +68,10 @@ interface OrderInterface
                 'save_in_address_book' => 1
             ],
             'items' => [
-                ['product_id' => '14', 'qty' => 1],
-                ['product_id' => '20', 'qty' => 1]
+                ['sku' => '24-WB04', 'qty' => 1],
+                ['sku' => '24-UG01', 'qty' => 1]
             ]
         ],
     ];
 }
+
