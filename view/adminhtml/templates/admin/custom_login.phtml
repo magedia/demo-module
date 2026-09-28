@@ -17,14 +17,16 @@ $demoPassword = 'demo1234';
         </legend><br/>
         <input name="form_key" type="hidden" value="<?= $escaper->escapeHtmlAttr($block->getFormKey()) ?>" />
 
-        <!--
-            The credentials are submitted from hidden inputs, and the visible
-            boxes below carry no name and no type="password". Password managers
-            key on a password input to decide a form is a login form: with none
-            present they neither offer to fill nor overwrite anything, which
-            readonly alone never achieved. Whatever a manager does to the
-            visible boxes, what posts is what is written here.
-        -->
+        <?php
+        /*
+         * The credentials are submitted from these hidden inputs, and the
+         * visible boxes below carry no name and no password input type.
+         * Password managers use a password input to decide a form is a login
+         * form: with none present they neither offer to fill nor overwrite
+         * anything, which readonly alone never achieved. Whatever a manager
+         * does to the visible boxes, what posts is what is written here.
+         */
+        ?>
         <input type="hidden" name="login[username]" value="<?= $escaper->escapeHtmlAttr($demoUsername) ?>" />
         <input type="hidden" name="login[password]" value="<?= $escaper->escapeHtmlAttr($demoPassword) ?>" />
 
