@@ -25,6 +25,10 @@
                        data-validate="{required:true}"
                        placeholder="<?= $escaper->escapeHtmlAttr(__('user name')) ?>"
                        autocomplete="off"
+                       data-lpignore="true"
+                       data-1p-ignore
+                       data-bwignore
+                       data-form-type="other"
                        readonly
                 />
             </div>
@@ -42,6 +46,10 @@
                        value="demo1234"
                        placeholder="<?= $escaper->escapeHtmlAttr(__('password')) ?>"
                        autocomplete="off"
+                       data-lpignore="true"
+                       data-1p-ignore
+                       data-bwignore
+                       data-form-type="other"
                        readonly
                 />
             </div>
@@ -56,3 +64,33 @@
         </div>
     </fieldset>
 </form>
+
+<?php
+$reassertCredentials = <<<JS
+// Password managers overwrite these fields even though they are readonly, so
+// the form submits someone else's saved credentials instead of the demo ones.
+// Every such attempt counts as a failed login for "demo", and once enough
+// accumulate Magento demands a captcha that this template never renders --
+// locking every visitor out of the demo admin. Re-assert the values on submit.
+(function () {
+    var form = document.getElementById('login-form');
+
+    if (!form) {
+        return;
+    }
+
+    form.addEventListener('submit', function () {
+        var credentials = {username: 'demo', login: 'demo1234'};
+
+        Object.keys(credentials).forEach(function (id) {
+            var field = document.getElementById(id);
+
+            if (field) {
+                field.value = credentials[id];
+            }
+        });
+    }, true);
+})();
+JS;
+?>
+<?= /* @noEscape */ $secureRenderer->renderTag('script', [], $reassertCredentials, false) ?>
