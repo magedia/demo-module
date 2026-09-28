@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Magedia\Demo\Processor\MagentoSampleData\Order;
 
 use Magedia\Demo\Api\Data\Magento\OrderInterface;
-use Magento\Catalog\Model\ProductFactory;
+use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Customer\Model\CustomerFactory;
 use Magento\Framework\Exception\LocalizedException;
@@ -23,9 +23,9 @@ class OrdersData
     private StoreManagerInterface $_storeManager;
 
     /**
-     * @var ProductFactory
+     * @var ProductRepositoryInterface
      */
-    private ProductFactory $_productFactory;
+    private ProductRepositoryInterface $productRepository;
 
     /**
      * @var CustomerFactory
@@ -54,7 +54,7 @@ class OrdersData
 
     /**
      * @param StoreManagerInterface $storeManager
-     * @param ProductFactory $productFactory
+     * @param ProductRepositoryInterface $productRepository
      * @param CustomerFactory $customerFactory
      * @param CustomerRepositoryInterface $customerRepository
      * @param Rate $shippingRate
@@ -63,7 +63,7 @@ class OrdersData
      */
     public function __construct(
         StoreManagerInterface       $storeManager,
-        ProductFactory              $productFactory,
+        ProductRepositoryInterface  $productRepository,
         CustomerFactory             $customerFactory,
         CustomerRepositoryInterface $customerRepository,
         Rate                        $shippingRate,
@@ -71,7 +71,7 @@ class OrdersData
         QuoteManagement $quoteManagment
     ) {
         $this->_storeManager = $storeManager;
-        $this->_productFactory = $productFactory;
+        $this->productRepository = $productRepository;
         $this->customerFactory = $customerFactory;
         $this->customerRepository = $customerRepository;
         $this->shippingRate = $shippingRate;
@@ -81,6 +81,7 @@ class OrdersData
 
     /**
      * Create Orders
+     *
      * @throws LocalizedException
      * @throws NoSuchEntityException
      * @throws \Exception
@@ -115,10 +116,10 @@ class OrdersData
             $quote->assignCustomer($customer);
 
             foreach ($order['items'] as $item) {
-                $product = $this->_productFactory->create()->load($item['product_id']);
+                $product = $this->productRepository->get($item['sku']);
                 $quote->addProduct(
                     $product,
-                    intval($item['qty'])
+                    (int)$item['qty']
                 );
             }
 
@@ -144,3 +145,4 @@ class OrdersData
         }
     }
 }
+
