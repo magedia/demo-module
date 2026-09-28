@@ -14,7 +14,7 @@ define([
         function timerCountLogic(config) {
             let currentTime = new Date();
             let currentTimeMilliseconds = Date.parse(currentTime);
-            let lastResetTime = config.last_reset_time.replace(/-/g, '/').replace(/[a-z]+/gi, ' ');
+            let lastResetTime = String(config.last_reset_time || '').replace(/-/g, '/').replace(/[a-z]+/gi, ' ');
             let resetTimeout = config.reset_timeout;
             const nextResetTime = Date.parse(lastResetTime) + Math.abs(currentTime.getTimezoneOffset() * 60 * 1000) + resetTimeout * 60 * 1000;
             let timeToReset = (nextResetTime - currentTimeMilliseconds) / 1000;
@@ -34,6 +34,18 @@ define([
                 resetTimeoutText = resetTimeout + (resetTimeout === 1 ? ' minute' : ' minutes');
             }
             $('#reset_timeout_text').text(resetTimeoutText);
+
+            // A restore that is already due means the Magento scheduler stopped
+            // (bin/magento cron:run), not that a restore is seconds away. Falling
+            // through to the branch below would put every visitor behind the
+            // overlay and reload them every 30s for as long as cron stays down --
+            // which is exactly what happened when the cron user was deleted. Leave
+            // the store usable and let the stale timer show.
+            if (!isFinite(timeToReset) || timeToReset <= 10) {
+                $('#reset_timer').text('is overdue');
+
+                return;
+            }
 
             let timer = setInterval(function tick (){
                 if (timeToReset !== 0 && timeToReset > 10) {
