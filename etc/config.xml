@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <magedia_demo>
+            <general>
+                <marketplace_url>https://marketplace.magento.com/magedia-m2-pdf-invoice.html</marketplace_url>
+            </general>
+        </magedia_demo>
+    </default>
+</config>

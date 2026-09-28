@@ -4,7 +4,9 @@
  * @var \Magento\Framework\Escaper $escaper
  */
 $magediaSiteUrl = 'https://magedia.com/';
-$marketplaceUrl = 'https://marketplace.magento.com/magedia-m2-pdf-invoice.html';
+/** @var \Magedia\Demo\ViewModel\MarketplaceUrl $marketplaceUrlViewModel */
+$marketplaceUrlViewModel = $block->getData('marketplace_url_view_model');
+$marketplaceUrl = $marketplaceUrlViewModel->get();
 ?>
 <div class="reset-warning-block">
     <div class="info">
