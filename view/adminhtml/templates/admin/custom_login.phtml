@@ -2,7 +2,12 @@
 /**
  * @var \Magento\Framework\View\Element\AbstractBlock $block
  * @var \Magento\Framework\Escaper $escaper
+ * @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer
  */
+
+// Public demo credentials -- they are printed on this page by design.
+$demoUsername = 'demo';
+$demoPassword = 'demo1234';
 ?>
 
 <form method="post" action="" id="login-form" data-mage-init='{"form": {}, "validation": {}}' autocomplete="off">
@@ -11,6 +16,18 @@
             <span><?= $escaper->escapeHtml(__('Welcome, please sign in')) ?></span>
         </legend><br/>
         <input name="form_key" type="hidden" value="<?= $escaper->escapeHtmlAttr($block->getFormKey()) ?>" />
+
+        <!--
+            The credentials are submitted from hidden inputs, and the visible
+            boxes below carry no name and no type="password". Password managers
+            key on a password input to decide a form is a login form: with none
+            present they neither offer to fill nor overwrite anything, which
+            readonly alone never achieved. Whatever a manager does to the
+            visible boxes, what posts is what is written here.
+        -->
+        <input type="hidden" name="login[username]" value="<?= $escaper->escapeHtmlAttr($demoUsername) ?>" />
+        <input type="hidden" name="login[password]" value="<?= $escaper->escapeHtmlAttr($demoPassword) ?>" />
+
         <div class="admin__field _required field-username">
             <label for="username" class="admin__field-label">
                 <span><?= $escaper->escapeHtml(__('Username')) ?></span>
@@ -19,11 +36,8 @@
                 <input id="username"
                        class="admin__control-text"
                        type="text"
-                       name="login[username]"
-                       autofocus
-                       value="demo"
-                       data-validate="{required:true}"
-                       placeholder="<?= $escaper->escapeHtmlAttr(__('user name')) ?>"
+                       value="<?= $escaper->escapeHtmlAttr($demoUsername) ?>"
+                       tabindex="-1"
                        autocomplete="off"
                        data-lpignore="true"
                        data-1p-ignore
@@ -39,12 +53,10 @@
             </label>
             <div class="admin__field-control">
                 <input id="login"
-                       class="admin__control-text"
-                       type="password"
-                       name="login[password]"
-                       data-vsalidate="{required:true}"
-                       value="demo1234"
-                       placeholder="<?= $escaper->escapeHtmlAttr(__('password')) ?>"
+                       class="admin__control-text demo-password"
+                       type="text"
+                       value="<?= $escaper->escapeHtmlAttr($demoPassword) ?>"
+                       tabindex="-1"
                        autocomplete="off"
                        data-lpignore="true"
                        data-1p-ignore
@@ -64,33 +76,10 @@
         </div>
     </fieldset>
 </form>
-
 <?php
-$reassertCredentials = <<<JS
-// Password managers overwrite these fields even though they are readonly, so
-// the form submits someone else's saved credentials instead of the demo ones.
-// Every such attempt counts as a failed login for "demo", and once enough
-// accumulate Magento demands a captcha that this template never renders --
-// locking every visitor out of the demo admin. Re-assert the values on submit.
-(function () {
-    var form = document.getElementById('login-form');
-
-    if (!form) {
-        return;
-    }
-
-    form.addEventListener('submit', function () {
-        var credentials = {username: 'demo', login: 'demo1234'};
-
-        Object.keys(credentials).forEach(function (id) {
-            var field = document.getElementById(id);
-
-            if (field) {
-                field.value = credentials[id];
-            }
-        });
-    }, true);
-})();
-JS;
+// Renders the demo password as dots without a type="password" input, which is
+// what would bring the password managers back. Browsers without support just
+// show the credential in clear -- it is public either way.
+$maskStyle = '.demo-password { -webkit-text-security: disc; text-security: disc; }';
 ?>
-<?= /* @noEscape */ $secureRenderer->renderTag('script', [], $reassertCredentials, false) ?>
+<?= /* @noEscape */ $secureRenderer->renderTag('style', [], $maskStyle, false) ?>
