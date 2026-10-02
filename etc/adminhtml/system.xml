@@ -3,20 +3,14 @@
 /**
  * @author    Magedia Team
  * @copyright Copyright (c) 2021 Magedia (https://www.magedia.com)
- * @package   Magedia_PdfInvoice
+ * @package   Magedia_Demo
  * @version   1.0.0
  */
 -->
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
-        <section id="magedia_pdfinvoice" translate="label" showInDefault="1" showInStore="1" showInWebsite="1">
-            <group id="general" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1" translate="label">
-                <field id="core_button" translate="label comment tooltip" type="button" sortOrder="0" showInDefault="0" showInWebsite="0" showInStore="0">
-                    <frontend_model>Magedia\Core\Block\Adminhtml\System\Config\Button</frontend_model>
-                </field>
-            </group>
-        </section>
+
         <!--
             Declares magedia_demo/general/marketplace_url so it can be set per
             install: bin/magento config:set rejects any path the config
@@ -29,6 +23,8 @@
             <resource>Magento_Config::config</resource>
             <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>General</label>
+                <field id="automatic_reset" type="select" showInDefault="0" showInWebsite="0" showInStore="0"><label>Automatic reset</label></field>
+                <field id="banner_disabled" type="select" showInDefault="0" showInWebsite="0" showInStore="0"><label>Disable shared banner</label></field>
                 <field id="marketplace_url" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Marketplace URL</label>
                     <comment>Target of the "Back to Magedia store" link in the demo banner.</comment>

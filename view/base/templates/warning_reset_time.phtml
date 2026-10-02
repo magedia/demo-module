@@ -3,6 +3,7 @@
  * @var \Magento\Framework\View\Element\AbstractBlock $block
  * @var \Magento\Framework\Escaper $escaper
  */
+if ($block->getData('marketplace_url_view_model')->bannerDisabled()) return;
 $magediaSiteUrl = 'https://magedia.com/';
 /** @var \Magedia\Demo\ViewModel\MarketplaceUrl $marketplaceUrlViewModel */
 $marketplaceUrlViewModel = $block->getData('marketplace_url_view_model');

@@ -37,6 +37,7 @@ class NextResetCheck
     public function __construct(
         LastResetTimeFactory $lastResetTimeFactory,
         TimezoneInterface $timezone,
+        private \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         EventManager $eventManager
     ) {
         $this->lastResetTimeFactory = $lastResetTimeFactory;
@@ -52,6 +53,7 @@ class NextResetCheck
      */
     public function execute(): void
     {
+        if (!$this->scopeConfig->isSetFlag('magedia_demo/general/automatic_reset')) return;
         $lastReset = $this->lastResetTimeFactory->create();
         $resetTimeModel = $lastReset->load(1);
         $nextReset = $resetTimeModel->getData('next_update');

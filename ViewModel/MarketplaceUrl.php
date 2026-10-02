@@ -21,7 +21,7 @@ class MarketplaceUrl implements ArgumentInterface
 {
     public const XML_PATH_MARKETPLACE_URL = 'magedia_demo/general/marketplace_url';
 
-    private const FALLBACK_URL = 'https://marketplace.magento.com/magedia-m2-pdf-invoice.html';
+    private const FALLBACK_URL = 'https://store.magedia.com/';
 
     /**
      * @var ScopeConfigInterface
@@ -41,6 +41,11 @@ class MarketplaceUrl implements ArgumentInterface
      *
      * @return string
      */
+    public function bannerDisabled(): bool
+    {
+        return $this->scopeConfig->isSetFlag('magedia_demo/general/banner_disabled');
+    }
+
     public function get(): string
     {
         $url = (string)$this->scopeConfig->getValue(

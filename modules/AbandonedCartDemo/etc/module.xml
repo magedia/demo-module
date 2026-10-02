@@ -1,0 +1,1 @@
+<?xml version="1.0"?><config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd"><module name="Magedia_AbandonedCartDemo"><sequence><module name="Magedia_Demo"/><module name="Magedia_DemoSales"/><module name="Magedia_AbandonedCart"/></sequence></module></config>

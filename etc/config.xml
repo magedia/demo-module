@@ -3,7 +3,8 @@
     <default>
         <magedia_demo>
             <general>
-                <marketplace_url>https://marketplace.magento.com/magedia-m2-pdf-invoice.html</marketplace_url>
+                <automatic_reset>0</automatic_reset>
+                <marketplace_url>https://store.magedia.com/</marketplace_url>
             </general>
         </magedia_demo>
     </default>
