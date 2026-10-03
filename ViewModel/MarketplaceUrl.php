@@ -46,6 +46,12 @@ class MarketplaceUrl implements ArgumentInterface
         return $this->scopeConfig->isSetFlag('magedia_demo/general/banner_disabled');
     }
 
+    public function measurementId(): string
+    {
+        $id = (string)$this->scopeConfig->getValue('magedia_demo/general/measurement_id');
+        return preg_match('/^G-[A-Z0-9]+$/', $id) ? $id : '';
+    }
+
     public function get(): string
     {
         $url = (string)$this->scopeConfig->getValue(

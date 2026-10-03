@@ -1,0 +1,33 @@
+<?php
+/** @var \Magedia\Demo\ViewModel\MarketplaceUrl $viewModel */
+$viewModel = $block->getData('marketplace_url_view_model');
+$measurementId = $viewModel ? $viewModel->measurementId() : '';
+if (!$measurementId) return;
+?>
+<script>
+(function () {
+    var measurementId = <?= json_encode($measurementId, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>;
+    // Keep Magento secret keys, queries, fragments, and entity IDs out of analytics URLs.
+    function cleanUrl(value) {
+        if (!value) return '';
+        try {
+            var url = new URL(value);
+            return url.origin + url.pathname.replace(/\/key\/[^/]+/g, '').replace(/\/(id|order_id|invoice_id|creditmemo_id)\/[^/]+/g, '/$1');
+        } catch (error) { return ''; }
+    }
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
+    gtag('js', new Date());
+    gtag('config', measurementId, {
+        page_location: cleanUrl(location.href),
+        page_referrer: cleanUrl(document.referrer),
+        page_title: location.pathname.indexOf('/admin') === 0 ? 'Magedia Admin Demo' : 'Magedia Storefront Demo',
+        allow_google_signals: false,
+        allow_ad_personalization_signals: false
+    });
+    var script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=' + measurementId;
+    document.head.appendChild(script);
+})();
+</script>

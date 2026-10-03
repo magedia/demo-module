@@ -6,5 +6,12 @@
                 <arguments><argument name="marketplace_url_view_model" xsi:type="object">Magedia\Demo\ViewModel\MarketplaceUrl</argument></arguments>
             </block>
         </referenceContainer>
+        <referenceBlock name="head.additional">
+            <block class="Magento\Framework\View\Element\Template" name="magedia-demo-analytics" template="Magedia_Demo::analytics.phtml">
+                <arguments>
+                    <argument name="marketplace_url_view_model" xsi:type="object">Magedia\Demo\ViewModel\MarketplaceUrl</argument>
+                </arguments>
+            </block>
+        </referenceBlock>
     </body>
 </page>

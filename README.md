@@ -16,3 +16,9 @@ The login plugin substitutes fixed credentials for POST calls to Magento’s bac
 Before enabling the cart reset adapter, capture its synthetic `magedia_acart_rule` rows into `var/demo/abandoned-cart-rules.json`, owned by the Magento filesystem user and mode 0600. Never commit baseline files, visitor data, or credentials. Reset clears only the target extension's custom tables; it never sweeps all Magedia tables or reruns unrelated setup/ACL patches.
 
 Run `php tests/behavior.php` for reset coordination and login request-boundary tests. Validate XML against the installed Magento schemas, compile each enabled module combination, verify a normal login and an intentionally autofill-corrupted login, and check the store's demo links.
+
+## Demo analytics
+
+Set `magedia_demo/general/measurement_id` to each demo's own GA4 measurement ID with `bin/magento config:set`, then clear configuration and layout caches. An empty or invalid ID disables the tag. The shared module adds page-view tracking to both the storefront and admin pages; it does not emit ecommerce events. URLs omit Magento secret keys, entity IDs, query strings, and fragments, and analytics uses generic page titles rather than customer or order titles. Advertising personalization and Google signals are disabled.
+
+Preserve this setting in any full database reset baseline. The PDF Invoice and Abandoned Cart adapter resets do not alter it.

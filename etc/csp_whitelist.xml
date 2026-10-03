@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<csp_whitelist xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Csp:etc/csp_whitelist.xsd">
+    <policies>
+        <policy id="script-src"><values><value id="pdf-demo-gtag" type="host">https://www.googletagmanager.com</value></values></policy>
+        <policy id="connect-src"><values><value id="pdf-demo-ga" type="host">https://*.google-analytics.com</value><value id="pdf-demo-analytics" type="host">https://*.analytics.google.com</value><value id="pdf-demo-gtm" type="host">https://*.googletagmanager.com</value></values></policy>
+        <policy id="img-src"><values><value id="pdf-demo-ga-pixel" type="host">https://*.google-analytics.com</value></values></policy>
+    </policies>
+</csp_whitelist>
